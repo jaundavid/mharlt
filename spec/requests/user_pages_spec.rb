@@ -18,7 +18,7 @@ describe "UserPages" do
     it { should have_content('Sign up') }
     it { should have_title(full_title('Sign up')) }
   end
-  
+
   describe "signup" do
 
     before { visit signup_path }
@@ -42,7 +42,7 @@ describe "UserPages" do
       it "should create a user" do
         expect { click_button submit }.to change(User, :count).by(1)
       end
-      
+
       describe "after saving the user" do
         before { click_button submit }
         let(:user) { User.find_by(email: 'user@example.com') }
@@ -53,10 +53,13 @@ describe "UserPages" do
       end
     end
   end
-  
+
   describe "edit" do
     let(:user) { FactoryGirl.create(:user) }
-    before { visit edit_user_path(user) }
+    before {
+      sign_in user
+      visit edit_user_path(user)
+    }
 
     describe "page" do
       it { should have_content("Update your profile") }
@@ -70,5 +73,5 @@ describe "UserPages" do
       it { should have_content('error') }
     end
   end
-  
+
 end
